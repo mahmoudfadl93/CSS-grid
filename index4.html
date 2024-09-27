@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* Column measurements */
+        :root {
+            --gap: clamp(1rem, 4vw, 2rem);
+            --full: minmax(var(--gap), 1fr);
+            --content: min(clamp(30rem, 52vw, 60rem), 100% - var(--gap) * 2);
+            --popout: minmax(0, 2rem);
+            --feature: minmax(0, 12vw);
+            /* new measurements for side-anchored elements */
+            --content-inset: min(clamp(30rem, 52vw, 60rem), 100% - var(--gap));
+        }
+
+        /* Grid definition */
+        .grid-breakout {
+            display: grid;
+            grid-template-columns:
+                [full-start] var(--full) [feature-start] var(--feature) [popout-start] var(--popout) [content-start] var(--content) [content-end] var(--popout) [popout-end] var(--feature) [feature-end] var(--full) [full-end];
+        }
+
+        .grid-breakout-feature-left {
+            display: grid;
+            grid-template-columns:
+                [full-start] var(--full) [feature-start] var(--feature) [popout-start] var(--popout) [content-start] var(--content-inset) [content-end] var(--popout) [popout-end] var(--feature) [feature-end full-end];
+        }
+
+        /* Column assignments */
+        .grid-breakout>* {
+            grid-column: content;
+        }
+
+        .full {
+            grid-column: full;
+        }
+
+        .feature {
+            grid-column: feature;
+        }
+
+        .popout {
+            grid-column: popout;
+        }
+
+        .content {
+            grid-column: content;
+        }
+
+        .feature-left {
+            grid-column: full-start / feature-end;
+        }
+
+        .feature-right {
+            grid-column: feature-start / full-end;
+        }
+
+        /* ↓ = For demo purposes - not necessary for the layout, just for looks ;) */
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Nunito Sans", sans-serif;
+            line-height: 1.5;
+            font-size: clamp(1rem, 0.5vw + 0.8rem, 1.25rem);
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            margin: 0;
+            font-weight: 900;
+            line-height: 1.1;
+            text-wrap: pretty;
+        }
+
+        h1 {
+            text-wrap: balance;
+        }
+
+        .header-flex {
+            display: flex;
+            flex-direction: column;
+            margin-block-end: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .header-flex {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: baseline;
+            }
+        }
+
+        .no-shrink {
+            flex-shrink: 0;
+        }
+
+        .grid-breakout>*+* {
+            margin-top: 2rem;
+        }
+
+        .pad {
+            padding: var(--gap);
+        }
+
+        .pad-inline-end {
+            padding-inline-end: var(--gap);
+        }
+
+        .pad-block {
+            padding-block: var(--gap);
+        }
+
+        .bg-offset {
+            background-color: #294d8b;
+            color: #fff;
+        }
+
+        .bg-minimal {
+            background-color: #ede7e4;
+        }
+
+        .radius-tr {
+            border-top-right-radius: 5rem;
+        }
+
+        .radius-tl {
+            border-top-left-radius: 5rem;
+        }
+
+        .btn {
+            border-radius: 0.5em;
+            border: 2px solid currentColor;
+            color: #fff;
+            display: inline-block;
+            padding: 0.375em 0.75em;
+            font-weight: 700;
+            text-decoration: none;
+            transition: color 250ms ease-in-out, border 250ms ease-in-out;
+            margin-block-start: 1rem;
+        }
+
+        .btn:hover,
+        .btn:focus-visible {
+            color: #1296bd;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <main class="grid-breakout">
+        <section class="full grid-breakout bg-offset pad-block">
+            <div class="feature">
+                <div class="header-flex">
+                    <h1>Fluid Breakout Layout with CSS Grid</h1>
+                    <p>(DEMO 3 of 3)</p>
+                </div>
+                <p>Side-anchored elements.</p>
+                <a class="btn" href="https://www.viget.com/articles/fluid-breakout-layout-css-grid/" role="button"
+                    draggable="false">Read the article at Viget.com &rarr;</a>
+            </div>
+        </section>
+        <p><strong>(Because this has no column class, it defaults to 'content' size).</strong> Lorem ipsum dolor sit
+            amet consectetur adipisicing elit. Nisi praesentium dicta cupiditate incidunt, in eius similique pariatur
+            corrupti voluptatum minima! Vel provident corrupti odit placeat nesciunt deleniti officiis magnam quo?</p>
+        <section class="feature grid-breakout bg-minimal pad-block">
+            <div class="content">
+                <h2>A Feature Breakout (now with Content inner width)</h2>
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus vero eligendi aliquam,
+                    debitis, eum quidem amet neque iste tempore libero deleniti nesciunt! Magnam ullam nesciunt facere
+                    animi quas dolores quod.</p>
+            </div>
+        </section>
+        <section class="content">
+            <h2>More Content</h2>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint eaque, amet optio magnam quibusdam
+                assumenda laborum modi voluptatem a reprehenderit cumque, omnis, iusto alias magni. Amet non aliquam
+                necessitatibus. Ducimus?</p>
+        </section>
+        <section class="popout bg-offset pad">
+            <h2>A Popout Breakout</h2>
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus vero eligendi aliquam, debitis,
+                eum quidem amet neque iste tempore libero deleniti nesciunt! Magnam ullam nesciunt facere animi quas
+                dolores quod.</p>
+        </section>
+        <section class="feature-left grid-breakout-feature-left bg-minimal pad-block radius-tr">
+            <div class="feature pad-inline-end">
+                <h2>Anchor Left with Feature Width Inner Content</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab totam tenetur esse, eaque dolor ex hic
+                    porro. Inventore odio eum itaque neque, ab quaerat at tenetur qui vero aperiam adipisci!</p>
+            </div>
+        </section>
+    </main>
+
+
+
+
+</body>
+
+</html>
